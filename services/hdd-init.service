@@ -1,0 +1,11 @@
+[Unit]
+Description=set high speed fan
+Before=hddtemp.service
+
+[Install]
+WantedBy=basic.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash ${ROOT}/scripts/init.sh

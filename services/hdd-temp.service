@@ -1,0 +1,9 @@
+[Unit]
+Description=auto set fan speed
+Requires=hddtemp.service
+After=hddtemp.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash ${ROOT}/scripts/detect.sh

@@ -1,0 +1,9 @@
+[Unit]
+Description="硬盘温度监控"
+
+[Install]
+WantedBy=timers.target
+
+[Timer]
+OnActiveSec=10
+OnUnitInactiveSec=5min
