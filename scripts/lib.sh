@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+export PATH=/bin:/usr/bin:/usr/local/bin:/usr/sbin
 DIR=
 
 function detect_controller() {

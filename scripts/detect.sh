@@ -14,19 +14,19 @@ for LINE in "${LINES[@]}"; do
 	fi
 	mapfile -t -d '|' PARTS < <(echo "$LINE")
 
-	PATH="${PARTS[0]}"
+	DEVNAME="${PARTS[0]}"
 	NAME="${PARTS[1]}"
 	VAL="${PARTS[2]}"
 	TYPE="${PARTS[3]}"
-	# echo "$PATH - $NAME - $VAL - $TYPE"
+	# echo "$DEVNAME - $NAME - $VAL - $TYPE"
 
 	if [[ $NAME == "ST1000DM003-1ER162" ]]; then
 		continue
 	fi
 
-	if [[ $VAL -gt 40 ]]; then
+	if [[ $VAL -gt 45 ]]; then
 		IS_HIGH=yes
-		echo "temperature of $PATH($NAME) is high - $VAL$TYPE" >&2
+		echo "temperature of $DEVNAME($NAME) is high - $VAL$TYPE" >&2
 	fi
 done
 
