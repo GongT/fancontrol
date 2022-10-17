@@ -1,6 +1,6 @@
 [Unit]
 Description=set high speed fan
-Before=hddtemp.service
+Before=hddtemp.service fancontrol.service
 Requires=modprobe@nct6775.service
 After=modprobe@nct6775.service
 

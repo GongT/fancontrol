@@ -1,4 +1,4 @@
-cd /sys/class/hwmon/hwmon3/
+cd /sys/class/hwmon/hwmon4/
 
 LVL=$1
 
