@@ -1,9 +1,9 @@
 [Unit]
 Description=auto set fan speed
-Requires=hddtemp.service
-After=hddtemp.service
+Requires=hddtemp.service modprobe@nct6775.service
+After=hddtemp.service modprobe@nct6775.service
 
 [Service]
 Type=oneshot
-RemainAfterExit=yes
+RemainAfterExit=no
 ExecStart=/bin/bash ${ROOT}/scripts/detect.sh

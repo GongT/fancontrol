@@ -13,6 +13,7 @@ function detect_controller() {
 
 	if ! [[ $DIR ]]; then
 		echo "PWM controller not found" >&2
+		exit 1
 	fi
 }
 

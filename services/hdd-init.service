@@ -1,6 +1,8 @@
 [Unit]
 Description=set high speed fan
 Before=hddtemp.service
+Requires=modprobe@nct6775.service
+After=modprobe@nct6775.service
 
 [Install]
 WantedBy=basic.target
