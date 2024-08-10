@@ -6,5 +6,5 @@ WantedBy=timers.target
 
 [Timer]
 OnBootSec=1min
-OnUnitInactiveSec=5min
-OnUnitActiveSec=5min
+OnUnitInactiveSec=30s
+OnUnitActiveSec=30s
