@@ -2,17 +2,17 @@
 Description=auto set fan speed
 Requires=hddtemp.service modprobe@nct6775.service
 After=hddtemp.service modprobe@nct6775.service
-OnFailure=fanspeed-fullspeed.service
-Conflicts=fanspeed-fullspeed.service fancontrol.service
+CollectMode=inactive-or-failed
+Conflicts=fancontrol.service
+RefuseManualStart=yes
 
 [Install]
 WantedBy=multi-user.target
 
 [Service]
-Type=notify
-Restart=always
-RestartSec=10
-ExecStart=/usr/local/libexec/fanspeed/bin/fansd
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/local/libexec/fanspeed/bin/fansd --full
 Environment=VIRTUAL_ENV=/usr/local/libexec/fanspeed
 Environment=PATH=/usr/local/libexec/fanspeed/bin:/usr/bin
 Environment=PYTHONUNBUFFERED=1

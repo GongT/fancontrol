@@ -71,8 +71,6 @@ class Fan:
             )
             pwm = PWM_MAX
 
-        if not self.enabled:
-            self.enable()
         try:
             self._pwmfile.write_text(str(pwm))
             # print(f"setting {self.name} to {pwm}")

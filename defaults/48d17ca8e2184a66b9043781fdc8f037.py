@@ -10,8 +10,9 @@ cpu_curve.next(Point(temperature=50, pwm=200))
 cpu_curve.next(Point(temperature=50, pwm=PWM_MAX))
 
 wall_curve = StraightLine()
+# 这个风扇超过200会反复启停
 wall_curve.next(Point(temperature=30, pwm=50))
-wall_curve.next(Point(temperature=45, pwm=PWM_MAX))
+wall_curve.next(Point(temperature=50, pwm=200))
 
 back_curve2 = StraightLine()
 back_curve2.next(Point(temperature=3, pwm=PWM_MIN))
@@ -23,13 +24,13 @@ pci_curve.next(Point(temperature=30, pwm=120))
 pci_curve.next(Point(temperature=45, pwm=PWM_MAX))
 
 
-pci_curve = Polyline()
-pci_curve.next(Point(temperature=49, pwm=120))
-pci_curve.next(Point(temperature=50, pwm=140))
-pci_curve.next(Point(temperature=51, pwm=160))
-pci_curve.next(Point(temperature=52, pwm=180))
-pci_curve.next(Point(temperature=53, pwm=200))
-pci_curve.next(Point(temperature=54, pwm=PWM_MAX))
+back_curve1 = Polyline()
+back_curve1.next(Point(temperature=49, pwm=120))
+back_curve1.next(Point(temperature=50, pwm=140))
+back_curve1.next(Point(temperature=51, pwm=160))
+back_curve1.next(Point(temperature=52, pwm=180))
+back_curve1.next(Point(temperature=53, pwm=200))
+back_curve1.next(Point(temperature=54, pwm=PWM_MAX))
 
 
 FAN_CPU = 2
@@ -51,7 +52,7 @@ def control(
 ):
     cpu_temp = average(k10temp.maximum(), nct6795.find("CPUTIN"))
     cpu_rem.add(cpu_temp)
-    print(f"cpu: {(cpu_temp)}")
+    print(f"cpu: {cpu_temp:.2f}°C")
 
     pci_temp = average(
         nouveau.maximum(),
@@ -59,22 +60,22 @@ def control(
         nvme.average(),
     )
     pci_rem.add(pci_temp)
-    print(f"pci: {(pci_temp)}")
+    print(f"pci: {pci_temp:.2f}°C")
 
     system_temp = average(
         maximum(nct6795.search(r"AUXTIN")),
         pci_temp,
     )
-    print(f"system: {(system_temp)}")
+    print(f"system: {system_temp:.2f}°C")
 
     disks_temp = SATA.maximum()
-    print(f"disks: {(disks_temp)}")
+    print(f"disks: {disks_temp:.2f}°C")
 
     whole_system = maximum(disks_temp, system_temp)
     whole_rem.add(whole_system)
 
     incre_max = maximum(cpu_rem.increasing(), whole_rem.increasing(), 0)
-    print(f"increasing: {(incre_max)}")
+    print(f"increasing: {incre_max:.2f}°C")
     total_max = maximum(
         cpu_rem.weightedAverage(),
         nvme.maximum(),
@@ -83,15 +84,19 @@ def control(
     )
 
     nct6795.control(FAN_CPU, cpu_curve.convert(cpu_temp))
+    
     nct6795.control(FAN_WALL, wall_curve.convert(whole_system))
 
-    if total_max and total_max > 50:
-        print(f"something is hot! ({total_max})")
-        nct6795.control(FAN_BACK, back_curve1.convert(incre_max))
+    if total_max and total_max > 49:
+        print(f"something is hot! ({total_max:.2f}°C)")
+        nct6795.control(FAN_BACK, back_curve1.convert(total_max))
     else:
         nct6795.control(FAN_BACK, back_curve2.convert(incre_max))
 
-    nct6795.control(FAN_PCI, pci_curve.convert(pci_rem.weightedAverage()))
+    if not total_max or total_max > 45:
+        nct6795.control(FAN_PCI, PWM_MAX)
+    else:
+        nct6795.control(FAN_PCI, pci_curve.convert(pci_rem.weightedAverage()))
 
 
 if __name__ == "__main__":

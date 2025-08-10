@@ -15,6 +15,7 @@ ln -s /usr/local/libexec/fanspeed/bin/fanctl /usr/local/bin/fanctl
 
 mkdir -p /usr/local/lib/systemd/system /etc/fanspeed
 cp services/fanspeed.service /usr/local/lib/systemd/system/fanspeed.service
+cp services/fanspeed-fullspeed.service /usr/local/lib/systemd/system/fanspeed-fullspeed.service
 
 
 echo ""
@@ -42,5 +43,4 @@ fi
 systemctl daemon-reload
 systemctl reenable fanspeed.service
 systemctl reset-failed fanspeed
-systemctl start fanspeed.service --no-block
-systemctl status fanspeed.service
+systemctl restart fanspeed.service --no-block

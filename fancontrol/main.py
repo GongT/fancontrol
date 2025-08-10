@@ -16,7 +16,7 @@ def cli():
         for fan in controller.fans:
             c = "10" if fan.enabled else "11"
             print(
-                f"  * \x1b[48;5;{c}mFan {fan.index}\x1b[0m: {fan.speed} RPM / {(fan.pwm/255):.2%}"
+                f"  * \x1b[48;5;{c}mFan {fan.index}\x1b[0m: {fan.speed} RPM / {fan.pwm} | {(fan.pwm/255):.2%}"
             )
         for temp in controller.temperatures:
             v = temp.degree
