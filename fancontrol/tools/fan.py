@@ -1,6 +1,7 @@
+import math
 from pathlib import Path
 
-from .constants import sys_root
+from .constants import PWM_MAX, sys_root
 from .fs import try_read_int, try_read_txt
 
 
@@ -60,17 +61,21 @@ class Fan:
         return try_read_int(self._pwmfile, -1)
 
     def control(self, pwm: int):
+        pwm = math.floor(pwm)
         if pwm < 0:
             print(f"warning: setting {self.name} to {pwm}, capping to 0")
             pwm = 0
-        if pwm > 255:
-            print(f"warning: setting {self.name} to {pwm}, capping to 255")
-            pwm = 255
+        if pwm > PWM_MAX:
+            print(
+                f"warning: setting {self.name} to {pwm}, capping to PWM_MAX ({PWM_MAX})"
+            )
+            pwm = PWM_MAX
 
         if not self.enabled:
             self.enable()
         try:
             self._pwmfile.write_text(str(pwm))
+            # print(f"setting {self.name} to {pwm}")
         except Exception as e:
             print(f"error: failed write pwm value {pwm} to {self._pwmfile}: {e}")
 

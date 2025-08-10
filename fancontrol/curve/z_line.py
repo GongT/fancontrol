@@ -1,3 +1,4 @@
+from ..tools.constants import PWM_MAX
 from .base import Curve, Point, PointsCurve
 
 
@@ -6,12 +7,12 @@ class Polyline(PointsCurve):
         for point in self._points:
             if input < point.temperature:
                 return point.pwm
-        return 255
+        return PWM_MAX
 
 class StraightLine(PointsCurve):
     def _convert(self, input: float) -> int:
         if not self._points:
-            return 255
+            return PWM_MAX
 
         # Find the two points the input is between
         for i in range(len(self._points) - 1):

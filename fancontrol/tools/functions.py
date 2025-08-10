@@ -45,11 +45,11 @@ def _get_values(tempss: CountInput):
             if v is None or v < 0:
                 continue
             values.append(v)
-        elif type(temps) is float:
+        elif type(temps) is float or type(temps) is int:
             v = temps
             if v is None or v < 0:
                 continue
-            values.append(v)
+            values.append(float(v))
         elif isinstance(temps, Iterable):
             values.extend(tempsToValues(temps))
         else:

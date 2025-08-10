@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fancontrol"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["GongT <admin@gongt.me>"]
 readme = "README.md"
@@ -10,7 +10,7 @@ python = "^3.13"
 
 [tool.poetry.scripts]
 fanctl = 'fancontrol.main:cli'
-fansd = 'fancontrol.main:daemon'
+fansd = 'fancontrol.main:_daemon'
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"

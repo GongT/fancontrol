@@ -10,12 +10,16 @@ def hddtemp_client():
     line_num = 0
     temps: list[Temp] = []
     for line in text.strip("|").split("||"):
-        line_num += 1
-        parts = line.split("|")
+        try:
+            line_num += 1
+            parts = line.split("|")
 
-        block_device = parts[0]
-        title = parts[1]
-        value = parts[2].strip()
+            block_device = parts[0]
+            title = parts[1]
+            value = parts[2].strip()
+        except Exception as e:
+            print(f"[hddtemp] failed parse line [{line}]: {e}")
+            continue
 
         if value == "SLP":
             continue

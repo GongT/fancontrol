@@ -1,6 +1,8 @@
 import math
 from abc import ABC, abstractmethod
 
+from ..tools.constants import PWM_MAX
+
 
 class Point:
     def __init__(self, temperature: float, pwm: int):
@@ -23,7 +25,7 @@ class Curve(ABC):
 
     def convert(self, input: float | None) -> int:
         if input is None or input < 0:
-            return 255
+            return PWM_MAX
         return self._convert(input)
 
 
