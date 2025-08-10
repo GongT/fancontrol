@@ -1,1 +1,7 @@
 .vscode/local-history
+dist
+*.whl
+*.tgz
+poetry.lock
+*.pyc
+__pycache__

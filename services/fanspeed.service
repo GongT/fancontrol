@@ -1,0 +1,17 @@
+[Unit]
+Description=auto set fan speed
+Requires=hddtemp.service modprobe@nct6775.service
+After=hddtemp.service modprobe@nct6775.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=notify
+Restart=always
+RestartSec=10
+RemainAfterExit=no
+ExecStart=/usr/local/libexec/fanspeed/bin/fansd
+Environment=VIRTUAL_ENV=/usr/local/libexec/fanspeed
+Environment=PATH=/usr/local/libexec/fanspeed/bin:/usr/bin
+Environment=PYTHONUNBUFFERED=1

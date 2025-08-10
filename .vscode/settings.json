@@ -8,6 +8,9 @@
 	// "prettier.prettierPath": "common/temp/node_modules/prettier",
 	// "typescript.tsdk": "./common/temp/node_modules/.pnpm/node_modules/typescript/lib",
 	"files.associations": {
-		"*.json": "json5"
-	}
+		"*.json": "jsonc"
+	},
+	"python-envs.defaultEnvManager": "ms-python.python:poetry",
+	"python-envs.defaultPackageManager": "ms-python.python:poetry",
+	"python-envs.pythonProjects": []
 }

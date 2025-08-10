@@ -3,22 +3,19 @@
 set -Eeuo pipefail
 
 cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
-ROOT=$(pwd)
-cd services
 
-{
-	cat hdd-temp.service
-	echo "Environment=ROOT=$ROOT"
-} >/usr/lib/systemd/system/hdd-temp.service
+rm -rf dist
+python -m venv /usr/local/libexec/fanspeed --upgrade
 
-{
-	cat hdd-temp.timer
-} >/usr/lib/systemd/system/hdd-temp.timer
+poetry build -f wheel
+/usr/local/libexec/fanspeed/bin/pip install dist/*.whl
+/usr/local/libexec/fanspeed/bin/pip install --upgrade --force-reinstall --no-deps dist/*.whl
 
-{
-	cat hdd-init.service
-	echo "Environment=ROOT=$ROOT"
-} >/usr/lib/systemd/system/hdd-init.service
+mkdir -p /usr/local/lib/systemd/system
+cp services/fanspeed.service /usr/local/lib/systemd/system/fanspeed.service
 
 systemctl daemon-reload
-systemctl enable --now hdd-init.service hdd-temp.timer
+systemctl reenable fanspeed.service
+systemctl reset-failed fanspeed
+systemctl restart fanspeed.service --no-block
+systemctl status fanspeed.service
