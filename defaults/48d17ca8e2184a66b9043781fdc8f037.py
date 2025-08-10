@@ -77,7 +77,7 @@ def control(
     incre_max = maximum(cpu_rem.increasing(), whole_rem.increasing(), 0)
     print(f"increasing: {incre_max:.2f}°C")
     total_max = maximum(
-        cpu_rem.weightedAverage(),
+        cpu_rem.average(),
         nvme.maximum(),
         nct6795.find("SYSTIN"),
         disks_temp,

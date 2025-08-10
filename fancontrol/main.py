@@ -34,7 +34,7 @@ def _load_control(path: Path):
     foo = importlib.util.module_from_spec(spec)
     sys.modules["fancontrol.control"] = foo
     spec.loader.exec_module(foo)
-    return foo.control
+    return getattr(foo, "control")
 
 
 def _daemon():
@@ -51,17 +51,17 @@ def _daemon():
             return
 
     print("usage: fansd [--full|/path/to/control.py]")
-    sys.exit(1)
+    sys.exit(66)
 
 def _daemon_boot(file: Path):
     if not file.exists():
         print(f"Control file '{file}' does not exist")
-        sys.exit(1)
+        sys.exit(66)
 
     control_function = _load_control(file)
     if not isinstance(control_function, Callable):
         print(f"'control' function is not defined or callable")
-        sys.exit(1)
+        sys.exit(66)
 
     start_service(control_function)
 
